@@ -4,6 +4,11 @@ var repoContainerEl = document.querySelector("#repos-container");
 var repoSeachTerm = document.querySelector("#repo-search-term");
 
 var displayRepos = function (repos, searchTerm) {
+  if (repos.length === 0) {
+    repoContainerEl.textContent = "No repositories found";
+    return;
+  }
+
   repoContainerEl.textContent = "";
   repoSeachTerm.textContent = searchTerm;
   console.log(searchTerm);
@@ -62,11 +67,20 @@ var displayRepos = function (repos, searchTerm) {
 var getUserRepos = function (user) {
   var apiUrl = "https://api.github.com/users/" + user + "/repos";
 
-  fetch(apiUrl).then(function (response) {
-    response.json().then(function (data) {
-      displayRepos(data, user);
+  fetch(apiUrl)
+    .then(function (response) {
+      if (response.ok) {
+        response.json().then(function (data) {
+          displayRepos(data, user);
+        });
+      } else {
+        alert("Error " + response.statusText);
+      }
+    })
+    .catch(function (error) {
+      //notice this `.catch()` getting chained onto the end of the `.then` method
+      alert("Unable to connect to GitHub");
     });
-  });
   //console.log("outside");
 };
 
