@@ -2,7 +2,6 @@ var userFormEl = document.querySelector("#user-form");
 var nameInputEl = document.querySelector("#username");
 var repoContainerEl = document.querySelector("#repos-container");
 var repoSeachTerm = document.querySelector("#repo-search-term");
-//var languageButtonsEl = document.createElement("div");
 var languageButtonsEl = document.querySelector("#language-buttons");
 
 var displayRepos = function (repos, searchTerm) {
@@ -120,6 +119,12 @@ var formSubmitHandler = function (event) {
 var buttonClickHandler = function (event) {
   var language = event.target.getAttribute("data-language");
   console.log(language);
+  if (language) {
+    getFeaturedRepos(language);
+
+    //clear old content
+    repoContainerEl.textContent = "";
+  }
 };
 
 userFormEl = addEventListener("submit", formSubmitHandler);
